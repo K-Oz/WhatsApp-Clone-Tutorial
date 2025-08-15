@@ -5,7 +5,7 @@
 
 [![whatsapp-clone](https://user-images.githubusercontent.com/25294569/64722192-a4885a00-d4d6-11e9-960d-8a9bae6b26de.gif)](https://github.com/Urigo/WhatsApp-Clone-Tutorial)
 
-!(https://www.youtube.com/watch?v=omsHNP4Vjhc)
+[Watch the tutorial video](https://www.youtube.com/watch?v=omsHNP4Vjhc)
 
 Whatsapp Clone is a free and open-source tutorial that will guide you step-by-step on how to create a full-stack,
 mobile, hybrid web application from scratch.
