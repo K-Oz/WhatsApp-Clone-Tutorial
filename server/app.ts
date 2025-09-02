@@ -9,6 +9,6 @@ app.use(cors({ credentials: true, origin }));
 app.use(express.json());
 app.use(cookieParser());
 
-app.get('/_ping', (req, res) => {
+app.get('/_ping', (req: any, res: any) => {
   res.send('pong');
 });
