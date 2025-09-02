@@ -39,7 +39,7 @@ export class Auth {
 
     const authToken = jwt.sign(username, secret);
 
-    this.res.cookie('authToken', authToken, { maxAge: expiration });
+    (this.res as any).cookie('authToken', authToken, { maxAge: expiration });
 
     return user;
   }

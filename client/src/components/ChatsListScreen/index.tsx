@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 import ChatsNavbar from './ChatsNavbar'
 import ChatsList from './ChatsList'
-import { chats } from '../../db'
+import { Chat } from '../../db'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -9,6 +9,14 @@ const Container = styled.div`
 `
 
 const ChatsListScreen: React.FC = () => {
+  const [chats, setChats] = useState<Chat[]>([]);
+
+  useMemo(async () => {
+    const body = await fetch(`${process.env.REACT_APP_SERVER_URL}/chats`);
+    const chats = await body.json();
+    setChats(chats);
+  }, []);
+
   return (
     <Container>
       <ChatsNavbar />
