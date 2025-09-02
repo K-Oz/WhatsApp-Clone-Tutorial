@@ -1,5 +1,5 @@
 import React from 'react'
-import ChatsListScreen from './ChatsListScreen'
+import ChatsListScreen from './components/ChatsListScreen'
 
 function App() {
   return (
