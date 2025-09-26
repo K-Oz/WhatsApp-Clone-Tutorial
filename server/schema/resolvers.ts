@@ -31,25 +31,25 @@ const chats = [
     id: '1',
     name: 'Ethan Gonzalez',
     picture: 'https://randomuser.me/api/portraits/thumb/men/1.jpg',
-    lastMessage: '1',
+    messages: ['1'],
   },
   {
     id: '2',
     name: 'Bryan Wallace',
     picture: 'https://randomuser.me/api/portraits/thumb/men/2.jpg',
-    lastMessage: '2',
+    messages: ['2'],
   },
   {
     id: '3',
     name: 'Avery Stewart',
     picture: 'https://randomuser.me/api/portraits/thumb/women/1.jpg',
-    lastMessage: '3',
+    messages: ['3'],
   },
   {
     id: '4',
     name: 'Katie Peterson',
     picture: 'https://randomuser.me/api/portraits/thumb/women/2.jpg',
-    lastMessage: '4',
+    messages: ['4'],
   },
 ];
 
@@ -58,14 +58,23 @@ const resolvers = {
   URL: URLResolver,
 
   Chat: {
+    messages(chat: any) {
+      return messages.filter((m) => chat.messages.includes(m.id));
+    },
+
     lastMessage(chat: any) {
-      return messages.find((m) => m.id === chat.lastMessage);
+      const lastMessage = chat.messages[chat.messages.length - 1];
+      return messages.find((m) => m.id === lastMessage);
     },
   },
 
   Query: {
     chats() {
       return chats;
+    },
+
+    chat(root: any, { chatId }: any) {
+      return chats.find(c => c.id === chatId);
     },
   },
 };

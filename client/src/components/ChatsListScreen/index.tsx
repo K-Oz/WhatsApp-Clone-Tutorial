@@ -1,14 +1,15 @@
-import React, { useState, useMemo } from 'react'
-import ChatsNavbar from './ChatsNavbar'
-import ChatsList from './ChatsList'
-import { Chat } from '../../db'
-import styled from 'styled-components'
+import React, { useState, useMemo } from 'react';
+import ChatsNavbar from './ChatsNavbar';
+import ChatsList from './ChatsList';
+import { Chat } from '../../db';
+import styled from 'styled-components';
+import { RouteComponentProps } from 'react-router-dom';
 
 const Container = styled.div`
   height: 100vh;
-`
+`;
 
-const ChatsListScreen: React.FC = () => {
+const ChatsListScreen: React.FC<RouteComponentProps> = ({ history }) => {
   const [chats, setChats] = useState<Chat[]>([]);
 
   useMemo(async () => {
@@ -20,9 +21,9 @@ const ChatsListScreen: React.FC = () => {
   return (
     <Container>
       <ChatsNavbar />
-      <ChatsList chats={chats} />
+      <ChatsList chats={chats} history={history} />
     </Container>
-  )
-}
+  );
+};
 
-export default ChatsListScreen
+export default ChatsListScreen;

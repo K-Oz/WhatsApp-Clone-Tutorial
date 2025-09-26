@@ -17,7 +17,21 @@ describe('ChatsList', () => {
       },
     ]
 
-    const { container, getByTestId } = render(<ChatsList chats={mockChats} />)
+    const mockHistory = {
+      push: jest.fn(),
+      replace: jest.fn(),
+      go: jest.fn(),
+      goBack: jest.fn(),
+      goForward: jest.fn(),
+      block: jest.fn(),
+      listen: jest.fn(),
+      location: { pathname: '/', search: '', hash: '', state: undefined },
+      length: 1,
+      action: 'PUSH' as const,
+      createHref: jest.fn(),
+    }
+
+    const { container, getByTestId } = render(<ChatsList chats={mockChats} history={mockHistory} />)
 
     await waitFor(() => container)
 
