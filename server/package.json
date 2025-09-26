@@ -16,7 +16,8 @@
     "codegen": "graphql-codegen",
     "format": "prettier \"**/*.ts\" --write",
     "loadtest": "yarn artillery run artillery.yml > loadtest.log",
-    "loadtest:limit": "yarn artillery run artillery-limit.yml > loadtest.log"
+    "loadtest:limit": "yarn artillery run artillery-limit.yml > loadtest.log",
+    "step4-demo": "RESET_DB=false ts-node step4-demo.ts"
   },
   "jest-junit": {
     "outputDirectory": "./test-results"
