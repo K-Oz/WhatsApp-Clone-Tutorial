@@ -1,8 +1,10 @@
-import React from 'react'
-import moment from 'moment'
-import { Chat } from '../../db'
-import { List, ListItem } from '@material-ui/core'
-import styled from 'styled-components'
+import React from 'react';
+import moment from 'moment';
+import { Chat } from '../../db';
+import { List, ListItem } from '@material-ui/core';
+import styled from 'styled-components';
+import { useCallback } from 'react';
+import { History } from 'history';
 
 const Container = styled.div`
   height: calc(100% - 56px);
@@ -57,15 +59,27 @@ const MessageDate = styled.div`
 `
 
 interface ChatsListProps {
-  chats: Chat[]
+  chats: Chat[];
+  history: History;
 }
 
-const ChatsList: React.FC<ChatsListProps> = ({ chats }) => {
+const ChatsList: React.FC<ChatsListProps> = ({ chats, history }) => {
+  const navToChat = useCallback(
+    (chat) => {
+      history.push(`chats/${chat.id}`);
+    },
+    [history]
+  );
+
   return (
     <Container>
       <StyledList>
         {chats.map((chat) => (
-          <StyledListItem key={chat.id} button>
+          <StyledListItem
+            key={chat.id}
+            data-testid="chat"
+            button
+            onClick={navToChat.bind(null, chat)}>
             <ChatPicture
               data-testid="picture"
               src={chat.picture}
@@ -88,7 +102,7 @@ const ChatsList: React.FC<ChatsListProps> = ({ chats }) => {
         ))}
       </StyledList>
     </Container>
-  )
-}
+  );
+};
 
 export default ChatsList
