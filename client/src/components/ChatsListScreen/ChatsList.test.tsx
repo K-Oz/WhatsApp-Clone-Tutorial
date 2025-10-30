@@ -1,21 +1,35 @@
 import React from 'react'
+import { ApolloProvider } from '@apollo/client/react';
 import { render, waitFor } from '@testing-library/react'
 import ChatsList from './ChatsList'
+import { getChatsQuery } from './index';
+import { mockApolloClient } from '../../test-helpers';
 
 describe('ChatsList', () => {
   it('renders fetched chats data', async () => {
-    const mockChats = [
+    const client = mockApolloClient([
       {
-        id: '1',
-        name: 'Foo Bar',
-        picture: 'https://localhost:4000/picture.jpg',
-        lastMessage: {
-          id: '1',
-          content: 'Hello',
-          createdAt: new Date('1 Jan 2019 GMT'),
+        request: { query: getChatsQuery },
+        result: {
+          data: {
+            chats: [
+              {
+                __typename: 'Chat',
+                id: '1',
+                name: 'Foo Bar',
+                picture: 'https://localhost:4000/picture.jpg',
+                lastMessage: {
+                  __typename: 'Message',
+                  id: '1',
+                  content: 'Hello',
+                  createdAt: new Date('1 Jan 2019 GMT'),
+                },
+              },
+            ],
+          },
         },
       },
-    ]
+    ]);
 
     const mockHistory = {
       push: jest.fn(),
@@ -31,7 +45,24 @@ describe('ChatsList', () => {
       createHref: jest.fn(),
     }
 
-    const { container, getByTestId } = render(<ChatsList chats={mockChats} history={mockHistory} />)
+    const mockChats = [
+      {
+        id: '1',
+        name: 'Foo Bar',
+        picture: 'https://localhost:4000/picture.jpg',
+        lastMessage: {
+          id: '1',
+          content: 'Hello',
+          createdAt: new Date('1 Jan 2019 GMT'),
+        },
+      },
+    ]
+
+    const { container, getByTestId } = render(
+      <ApolloProvider client={client}>
+        <ChatsList chats={mockChats} history={mockHistory} />
+      </ApolloProvider>
+    )
 
     await waitFor(() => container)
 

@@ -1,24 +1,18 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { ApolloProvider } from '@apollo/client/react';
+import ReactDOM from 'react-dom';
 import App from './App'
+import { mockApolloClient } from './test-helpers';
 
-// Mock the fetch call to prevent issues during testing
-beforeEach(() => {
-  // @ts-ignore
-  global.fetch = jest.fn(() =>
-    Promise.resolve({
-      json: () => Promise.resolve([]),
-    })
-  )
-})
+it('renders without crashing', () => {
+  const client = mockApolloClient();
+  const div = document.createElement('div');
 
-afterEach(() => {
-  // @ts-ignore
-  global.fetch.mockRestore()
-})
-
-test('renders without crashing', () => {
-  render(<App />)
-  // Just test that the app renders without throwing an error
-  expect(document.body).toBeTruthy()
-})
+  ReactDOM.render(
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>,
+    div
+  );
+  ReactDOM.unmountComponentAtNode(div);
+});
