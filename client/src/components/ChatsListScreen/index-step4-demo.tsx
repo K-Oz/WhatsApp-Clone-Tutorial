@@ -24,8 +24,8 @@ const ToggleButton = styled.button<{ active: boolean }>`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background: ${(props) => props.active ? '#007bff' : '#ccc'};
-  color: ${(props) => props.active ? 'white' : 'black'};
+  background: ${(props) => (props.active ? '#007bff' : '#ccc')};
+  color: ${(props) => (props.active ? 'white' : 'black')};
 `
 
 // GraphQL query as shown in the tutorial
