@@ -29,16 +29,6 @@ interface ChatQueryMessage {
   __typename?: string;
 }
 
-interface ChatQueryResult {
-  id: string;
-  name: string;
-  picture: string;
-  messages: Array<ChatQueryMessage>;
-  __typename?: string;
-}
-
-type OptionalChatQueryResult = ChatQueryResult | null;
-
 const ChatRoomScreen: React.FC<ChatRoomScreenParams> = ({ chatId }) => {
   const client = useApolloClient();
   const { data } = useQuery<any>(getChatQuery, {

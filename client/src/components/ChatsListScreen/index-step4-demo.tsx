@@ -6,6 +6,7 @@ import ChatsNavbar from './ChatsNavbar'
 import ChatsList from './ChatsList'
 import { Chat } from '../../db'
 import styled from 'styled-components'
+import { RouteComponentProps } from 'react-router-dom';
 
 const Container = styled.div`
   height: 100vh;
@@ -17,14 +18,14 @@ const ToggleContainer = styled.div`
   text-align: center;
 `
 
-const ToggleButton = styled.button`
+const ToggleButton = styled.button<{ active: boolean }>`
   margin: 0 5px;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background: ${(props: { active: boolean }) => props.active ? '#007bff' : '#ccc'};
-  color: ${(props: { active: boolean }) => props.active ? 'white' : 'black'};
+  background: ${(props) => props.active ? '#007bff' : '#ccc'};
+  color: ${(props) => props.active ? 'white' : 'black'};
 `
 
 // GraphQL query as shown in the tutorial
@@ -43,7 +44,7 @@ const getChatsQuery = `
   }
 `;
 
-const ChatsListScreenStep4Demo: React.FC = () => {
+const ChatsListScreenStep4Demo: React.FC<RouteComponentProps> = ({ history }) => {
   const [chats, setChats] = useState<Chat[]>([]);
   const [useGraphQL, setUseGraphQL] = useState(false);
 
@@ -107,7 +108,7 @@ const ChatsListScreenStep4Demo: React.FC = () => {
         </p>
       </ToggleContainer>
       <ChatsNavbar />
-      <ChatsList chats={chats} />
+      <ChatsList chats={chats} history={history} />
     </Container>
   )
 }
