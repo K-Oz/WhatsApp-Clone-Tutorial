@@ -5,12 +5,14 @@ import {
   useAddMessageMutation,
 } from '../../graphql/types';
 import { writeMessage } from '../../services/cache.service';
+import { History } from 'history';
 
 interface ChatRoomScreenParams {
   chatId: string;
+  history: History;
 }
 
-const ChatRoomScreen: React.FC<ChatRoomScreenParams> = ({ chatId }) => {
+const ChatRoomScreen: React.FC<ChatRoomScreenParams> = ({ chatId, history }) => {
   const { data, loading } = useGetChatQuery({
     variables: { chatId },
   });
@@ -33,6 +35,7 @@ const ChatRoomScreen: React.FC<ChatRoomScreenParams> = ({ chatId }) => {
             __typename: 'Message',
             id: Math.random().toString(36).substr(2, 9),
             createdAt: new Date(),
+            isMine: true,
             chat: {
               __typename: 'Chat',
               id: chatId,

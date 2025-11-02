@@ -23,6 +23,7 @@ describe('ChatsList', () => {
                   id: '1',
                   content: 'Hello',
                   createdAt: new Date('1 Jan 2019 GMT'),
+                  isMine: true,
                 },
               },
             ],
@@ -54,6 +55,7 @@ describe('ChatsList', () => {
           id: '1',
           content: 'Hello',
           createdAt: new Date('1 Jan 2019 GMT'),
+          isMine: true,
         },
       },
     ]
