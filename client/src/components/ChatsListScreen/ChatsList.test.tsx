@@ -2,14 +2,14 @@ import React from 'react'
 import { ApolloProvider } from '@apollo/client/react';
 import { render, waitFor } from '@testing-library/react'
 import ChatsList from './ChatsList'
-import { getChatsQuery } from './index';
+import * as queries from '../../graphql/queries';
 import { mockApolloClient } from '../../test-helpers';
 
 describe('ChatsList', () => {
   it('renders fetched chats data', async () => {
     const client = mockApolloClient([
       {
-        request: { query: getChatsQuery },
+        request: { query: queries.chats },
         result: {
           data: {
             chats: [
