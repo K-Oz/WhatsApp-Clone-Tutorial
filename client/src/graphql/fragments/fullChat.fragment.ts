@@ -5,8 +5,12 @@ import message from './message.fragment';
 export default gql`
   fragment FullChat on Chat {
     ...Chat
-    messages {
-      ...Message
+    messages(limit: 100, after: 0) {
+      hasMore
+      cursor
+      messages {
+        ...Message
+      }
     }
   }
   ${chat}

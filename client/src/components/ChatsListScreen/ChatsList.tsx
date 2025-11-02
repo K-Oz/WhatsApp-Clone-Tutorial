@@ -59,7 +59,7 @@ const MessageDate = styled.div`
 
 interface Chat {
   id: string;
-  name: string;
+  name?: string | null;
   picture?: any | null;
   lastMessage?: {
     id: string;
