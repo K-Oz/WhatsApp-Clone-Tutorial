@@ -1,33 +1,13 @@
 import { defaultDataIdFromObject } from 'apollo-cache-inmemory';
-import gql from 'graphql-tag';
 import React from 'react';
 import { useCallback } from 'react';
 import * as fragments from '../../graphql/fragments';
+import * as queries from '../../graphql/queries';
 import {
   ChatsQuery,
   useGetChatQuery,
   useAddMessageMutation,
 } from '../../graphql/types';
-
-// eslint-disable-next-line
-const getChatQuery = gql`
-  query GetChat($chatId: ID!) {
-    chat(chatId: $chatId) {
-      ...FullChat
-    }
-  }
-  ${fragments.fullChat}
-`;
-
-// eslint-disable-next-line
-const addMessageMutation = gql`
-  mutation AddMessage($chatId: ID!, $content: String!) {
-    addMessage(chatId: $chatId, content: $content) {
-      ...Message
-    }
-  }
-  ${fragments.message}
-`;
 
 interface ChatRoomScreenParams {
   chatId: string;
@@ -105,14 +85,7 @@ const ChatRoomScreen: React.FC<ChatRoomScreenParams> = ({ chatId }) => {
             let clientChatsData: ChatsQuery | null;
             try {
               clientChatsData = client.readQuery({
-                query: gql`
-                  query Chats {
-                    chats {
-                      ...Chat
-                    }
-                  }
-                  ${fragments.chat}
-                `,
+                query: queries.chats,
               });
             } catch (e) {
               return;
@@ -134,14 +107,7 @@ const ChatRoomScreen: React.FC<ChatRoomScreenParams> = ({ chatId }) => {
             chats.unshift(chatWhereAdded);
 
             client.writeQuery({
-              query: gql`
-                query Chats {
-                  chats {
-                    ...Chat
-                  }
-                }
-                ${fragments.chat}
-              `,
+              query: queries.chats,
               data: { chats: chats },
             });
           }
