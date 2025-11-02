@@ -5,6 +5,8 @@ import {
   MessageFragment,
   useMessageAddedSubscription,
   ChatsQuery,
+  FullChatFragment,
+  ChatFragment,
 } from '../graphql/types';
 
 type Client = ApolloCache;
@@ -20,8 +22,7 @@ export const useCacheService = () => {
 };
 
 export const writeMessage = (client: Client, message: MessageFragment) => {
-  type FullChat = { [key: string]: any };
-  let fullChat;
+  let fullChat: FullChatFragment | null;
 
   const chatId = `Chat:${message.chat?.id}`;
 
@@ -30,7 +31,7 @@ export const writeMessage = (client: Client, message: MessageFragment) => {
   }
 
   try {
-    fullChat = client.readFragment<FullChat>({
+    fullChat = client.readFragment<FullChatFragment>({
       id: chatId,
       fragment: fragments.fullChat,
       fragmentName: 'FullChat',
@@ -44,7 +45,7 @@ export const writeMessage = (client: Client, message: MessageFragment) => {
   }
   
   // Check if the message already exists
-  if (fullChat.messages.messages?.some((m: any) => m.id === message.id)) return;
+  if (fullChat.messages.messages?.some((m: MessageFragment) => m.id === message.id)) return;
 
   // Add the message to the messages array
   fullChat.messages.messages.push(message);
@@ -74,10 +75,7 @@ export const writeMessage = (client: Client, message: MessageFragment) => {
   }
   const chats = data.chats;
 
-  const chatIndex = chats.findIndex((c: any) => {
-    if (message === null || message.chat === null) return -1;
-    return c.id === message?.chat?.id;
-  });
+  const chatIndex = chats.findIndex((c: ChatFragment) => c.id === message.chat?.id);
   if (chatIndex === -1) return;
   const chatWhereAdded = chats[chatIndex];
 
