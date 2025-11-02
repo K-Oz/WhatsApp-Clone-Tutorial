@@ -19,7 +19,7 @@ const ChatsListScreen: React.FC<RouteComponentProps> = ({ history }) => {
 
   return (
     <Container>
-      <ChatsNavbar />
+      <ChatsNavbar history={history} />
       <ChatsList chats={chats} history={history} />
     </Container>
   );
