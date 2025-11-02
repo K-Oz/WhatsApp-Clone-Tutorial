@@ -7,6 +7,9 @@ import {
   ChatsQuery,
   useGetChatQuery,
   useAddMessageMutation,
+  FullChatFragment,
+  MessageFragment,
+  ChatFragment,
 } from '../../graphql/types';
 
 interface ChatRoomScreenParams {
@@ -42,8 +45,7 @@ const ChatRoomScreen: React.FC<ChatRoomScreenParams> = ({ chatId }) => {
         update: (client, result) => {
           const data = result.data;
           if (data && data.addMessage) {
-            type FullChat = { [key: string]: any };
-            let fullChat;
+            let fullChat: FullChatFragment | null;
             const chatIdFromStore = defaultDataIdFromObject(chat);
 
             if (chatIdFromStore === null) {
@@ -51,7 +53,7 @@ const ChatRoomScreen: React.FC<ChatRoomScreenParams> = ({ chatId }) => {
             }
 
             try {
-              fullChat = client.readFragment<FullChat>({
+              fullChat = client.readFragment<FullChatFragment>({
                 id: chatIdFromStore,
                 fragment: fragments.fullChat,
                 fragmentName: 'FullChat',
@@ -65,7 +67,7 @@ const ChatRoomScreen: React.FC<ChatRoomScreenParams> = ({ chatId }) => {
             }
             if (
               fullChat.messages.some(
-                (currentMessage: any) =>
+                (currentMessage: MessageFragment) =>
                   data.addMessage && currentMessage.id === data.addMessage.id
               )
             ) {
@@ -82,25 +84,29 @@ const ChatRoomScreen: React.FC<ChatRoomScreenParams> = ({ chatId }) => {
               data: fullChat,
             });
 
-            let clientChatsData: ChatsQuery | null;
+            let existingChatsData: ChatsQuery | null;
             try {
-              clientChatsData = client.readQuery({
+              existingChatsData = client.readQuery({
                 query: queries.chats,
               });
             } catch (e) {
               return;
             }
 
-            if (!clientChatsData || !clientChatsData.chats) {
+            if (!existingChatsData || !existingChatsData.chats) {
               return null;
             }
-            const chats = clientChatsData.chats;
+            const chats = existingChatsData.chats;
 
             const chatIndex = chats.findIndex(
-              (currentChat: any) => currentChat.id === chatId
+              (currentChat: ChatFragment) => currentChat.id === chatId
             );
             if (chatIndex === -1) return;
             const chatWhereAdded = chats[chatIndex];
+
+            // The chat will appear at the top of the ChatsList component
+            chats.splice(chatIndex, 1);
+            chats.unshift(chatWhereAdded);
 
             // The chat will appear at the top of the ChatsList component
             chats.splice(chatIndex, 1);
