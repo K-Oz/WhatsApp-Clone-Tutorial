@@ -23,6 +23,7 @@
     "apollo-link-http": "1.5.17",
     "graphql": "16.11.0",
     "graphql-tag": "2.12.6",
+    "graphql-ws": "6.0.6",
     "history": "4.10.1",
     "jest-fetch-mock": "3.0.3",
     "moment": "^2.30.1",
