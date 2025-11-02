@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-import { Chat } from '../../db';
 import { List, ListItem } from '@material-ui/core';
 import styled from 'styled-components';
 import { useCallback } from 'react';
@@ -58,6 +57,17 @@ const MessageDate = styled.div`
   font-size: 13px;
 `
 
+interface Chat {
+  id: string;
+  name: string;
+  picture?: any | null;
+  lastMessage?: {
+    id: string;
+    content: string;
+    createdAt: any;
+  } | null;
+}
+
 interface ChatsListProps {
   chats: Chat[];
   history: History;
@@ -80,11 +90,13 @@ const ChatsList: React.FC<ChatsListProps> = ({ chats, history }) => {
             data-testid="chat"
             button
             onClick={navToChat.bind(null, chat)}>
-            <ChatPicture
-              data-testid="picture"
-              src={chat.picture}
-              alt="Profile"
-            />
+            {chat.picture && (
+              <ChatPicture
+                data-testid="picture"
+                src={chat.picture}
+                alt="Profile"
+              />
+            )}
             <ChatInfo>
               <ChatName data-testid="name">{chat.name}</ChatName>
               {chat.lastMessage && (

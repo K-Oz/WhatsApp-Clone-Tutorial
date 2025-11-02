@@ -1,0 +1,23 @@
+schema: ../server/schema/typeDefs.graphql
+documents: './src/**/*.{tsx,ts}'
+overwrite: true
+generates:
+  ./src/graphql/types.tsx:
+    plugins:
+      - add:
+          content: |
+            /* eslint-disable */
+            // @ts-nocheck
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    # The combined options of all provided plug-ins
+    # More information about the options below:
+    # graphql-code-generator.com/docs/plugins/typescript-react-apollo#configuration
+    config:
+      withHOC: false
+      withHooks: true
+      withComponent: false
+      reactApolloVersion: 3
+      apolloReactCommonImportFrom: '@apollo/client'
+      apolloReactHooksImportFrom: '@apollo/client/react'
