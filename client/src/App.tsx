@@ -9,6 +9,7 @@ import {
 import AuthScreen from './components/AuthScreen';
 import ChatRoomScreen from './components/ChatRoomScreen';
 import ChatsListScreen from './components/ChatsListScreen'
+import ChatCreationScreen from './components/ChatCreationScreen';
 import { withAuth } from './services/auth.service';
 
 const App: React.FC = () => (
@@ -16,6 +17,7 @@ const App: React.FC = () => (
     <Switch>
       <Route exact path="/sign-(in|up)" component={AuthScreen} />
       <Route exact path="/chats" component={withAuth(ChatsListScreen)} />
+      <Route exact path="/new-chat" component={withAuth(ChatCreationScreen)} />
       <Route
         exact
         path="/chats/:chatId"

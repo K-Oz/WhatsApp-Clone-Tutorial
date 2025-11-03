@@ -1,6 +1,7 @@
 import React from 'react';
 import ChatsNavbar from './ChatsNavbar';
 import ChatsList from './ChatsList';
+import AddChatButton from './AddChatButton';
 import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router-dom';
 import { useChatsQuery } from '../../graphql/types';
@@ -21,6 +22,7 @@ const ChatsListScreen: React.FC<RouteComponentProps> = ({ history }) => {
     <Container>
       <ChatsNavbar history={history} />
       <ChatsList chats={chats} history={history} />
+      <AddChatButton history={history} location={history.location} match={{} as any} />
     </Container>
   );
 };
