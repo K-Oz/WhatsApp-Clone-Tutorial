@@ -67,7 +67,7 @@ const AuthScreen: React.FC<RouteComponentProps<any>> = ({
 
       return (
         <Alternative>
-          Already have an accout? <label onClick={handleSignIn}>Sign in!</label>
+          Already have an account? <label onClick={handleSignIn}>Sign in!</label>
         </Alternative>
       );
     }
