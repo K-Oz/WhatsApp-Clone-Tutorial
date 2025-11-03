@@ -54,8 +54,8 @@ const ChatCreationScreen: React.FC<RouteComponentProps> = ({ history }) => {
           }
         },
       }).then((result) => {
-        if (result && result.data !== null) {
-          history.push(`/chats/${result.data!.addChat!.id}`);
+        if (result && result.data && result.data.addChat) {
+          history.push(`/chats/${result.data.addChat.id}`);
         }
       }),
     [addChat, history]

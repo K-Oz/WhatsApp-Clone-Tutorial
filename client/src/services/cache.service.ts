@@ -11,6 +11,8 @@ import {
   ChatFragment,
 } from '../graphql/types';
 
+// Accepts either an ApolloClient (with .cache property) or an ApolloCache directly
+// Used from mutations (ApolloClient) and subscriptions (ApolloCache via client.cache)
 type Client = { cache: ApolloCache } | ApolloCache;
 
 export const useCacheService = () => {
@@ -133,7 +135,7 @@ export const writeChat = (clientOrCache: Client, chat: ChatFragment) => {
   const chats = data.chats;
 
   if (!chats) return;
-  if (chats.some((c: any) => c.id === chat.id)) return;
+  if (chats.some((c: ChatFragment) => c.id === chat.id)) return;
 
   chats.unshift(chat);
 
@@ -170,7 +172,7 @@ export const eraseChat = (clientOrCache: Client, chatId: string) => {
 
   if (!chats) return;
 
-  const chatIndex = chats.findIndex((c: any) => c.id === chatId);
+  const chatIndex = chats.findIndex((c: ChatFragment) => c.id === chatId);
 
   if (chatIndex === -1) return;
 
