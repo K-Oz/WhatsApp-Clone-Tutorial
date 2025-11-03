@@ -1,5 +1,5 @@
 import { createMemoryHistory } from 'history';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/client/react';
 import React from 'react';
 import { cleanup, render, fireEvent, waitFor } from '@testing-library/react';
 import AddChatButton from './AddChatButton';

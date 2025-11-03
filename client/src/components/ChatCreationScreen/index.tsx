@@ -50,7 +50,7 @@ const ChatCreationScreen: React.FC<RouteComponentProps> = ({ history }) => {
         },
         update: (client, { data }) => {
           if (data && data.addChat) {
-            writeChat(client.cache, data.addChat);
+            writeChat(client, data.addChat);
           }
         },
       }).then((result) => {

@@ -11,7 +11,7 @@ import {
   ChatFragment,
 } from '../graphql/types';
 
-type Client = ApolloCache;
+type Client = { cache: ApolloCache } | ApolloCache;
 
 export const useCacheService = () => {
   useMessageAddedSubscription({
@@ -39,7 +39,8 @@ export const useCacheService = () => {
   });
 };
 
-export const writeMessage = (client: Client, message: MessageFragment) => {
+export const writeMessage = (clientOrCache: Client, message: MessageFragment) => {
+  const cache = 'cache' in clientOrCache ? clientOrCache.cache : clientOrCache;
   let fullChat: FullChatFragment | null;
 
   const chatId = `Chat:${message.chat?.id}`;
@@ -49,7 +50,7 @@ export const writeMessage = (client: Client, message: MessageFragment) => {
   }
 
   try {
-    fullChat = client.readFragment<FullChatFragment>({
+    fullChat = cache.readFragment<FullChatFragment>({
       id: chatId,
       fragment: fragments.fullChat,
       fragmentName: 'FullChat',
@@ -69,7 +70,7 @@ export const writeMessage = (client: Client, message: MessageFragment) => {
   fullChat.messages.messages.push(message);
   fullChat.lastMessage = message;
 
-  client.writeFragment({
+  cache.writeFragment({
     id: chatId,
     fragment: fragments.fullChat,
     fragmentName: 'FullChat',
@@ -78,7 +79,7 @@ export const writeMessage = (client: Client, message: MessageFragment) => {
 
   let data;
   try {
-    data = client.readQuery<ChatsQuery>({
+    data = cache.readQuery<ChatsQuery>({
       query: queries.chats,
     });
   } catch (e) {
@@ -101,16 +102,17 @@ export const writeMessage = (client: Client, message: MessageFragment) => {
   chats.splice(chatIndex, 1);
   chats.unshift(chatWhereAdded);
 
-  client.writeQuery({
+  cache.writeQuery({
     query: queries.chats,
     data: { chats: chats },
   });
 };
 
-export const writeChat = (client: Client, chat: ChatFragment) => {
+export const writeChat = (clientOrCache: Client, chat: ChatFragment) => {
+  const cache = 'cache' in clientOrCache ? clientOrCache.cache : clientOrCache;
   const chatId = `Chat:${chat.id}`;
 
-  client.writeFragment({
+  cache.writeFragment({
     id: chatId,
     fragment: fragments.chat,
     fragmentName: 'Chat',
@@ -119,7 +121,7 @@ export const writeChat = (client: Client, chat: ChatFragment) => {
 
   let data;
   try {
-    data = client.readQuery<ChatsQuery>({
+    data = cache.readQuery<ChatsQuery>({
       query: queries.chats,
     });
   } catch (e) {
@@ -135,21 +137,18 @@ export const writeChat = (client: Client, chat: ChatFragment) => {
 
   chats.unshift(chat);
 
-  client.writeQuery({
+  cache.writeQuery({
     query: queries.chats,
     data: { chats },
   });
 };
 
-export const eraseChat = (client: Client, chatId: string) => {
-  const chatType = {
-    __typename: 'Chat',
-    id: chatId,
-  };
+export const eraseChat = (clientOrCache: Client, chatId: string) => {
+  const cache = 'cache' in clientOrCache ? clientOrCache.cache : clientOrCache;
 
   const chatIdFromObject = `Chat:${chatId}`;
 
-  client.writeFragment({
+  cache.writeFragment({
     id: chatIdFromObject,
     fragment: fragments.fullChat,
     fragmentName: 'FullChat',
@@ -158,7 +157,7 @@ export const eraseChat = (client: Client, chatId: string) => {
 
   let data: ChatsQuery | null;
   try {
-    data = client.readQuery<ChatsQuery>({
+    data = cache.readQuery<ChatsQuery>({
       query: queries.chats,
     });
   } catch (e) {
@@ -178,7 +177,7 @@ export const eraseChat = (client: Client, chatId: string) => {
   // The chat will appear at the top of the ChatsList component
   chats.splice(chatIndex, 1);
 
-  client.writeQuery({
+  cache.writeQuery({
     query: queries.chats,
     data: { chats: chats },
   });

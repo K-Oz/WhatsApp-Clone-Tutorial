@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCallback } from 'react';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/client/react';
 import { Redirect } from 'react-router-dom';
 import { useCacheService } from './cache.service';
 

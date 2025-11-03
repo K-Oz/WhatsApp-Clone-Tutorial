@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/client/react';
 import {
   cleanup,
   render,
@@ -83,8 +83,9 @@ describe('UsersList', () => {
 
       await waitFor(() => expect(onUserPick.mock.calls.length).toBe(1));
 
-      expect(onUserPick.mock.calls[0][0].name).toEqual('Charles Dickhead');
-      expect(onUserPick.mock.calls[0][0].picture).toEqual(
+      const firstCall = onUserPick.mock.calls[0] as any[];
+      expect(firstCall[0].name).toEqual('Charles Dickhead');
+      expect(firstCall[0].picture).toEqual(
         'https://localhost:4000/dick.jpg'
       );
     }

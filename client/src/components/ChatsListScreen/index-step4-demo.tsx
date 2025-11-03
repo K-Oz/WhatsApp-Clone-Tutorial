@@ -107,7 +107,7 @@ const ChatsListScreenStep4Demo: React.FC<RouteComponentProps> = ({ history }) =>
           }
         </p>
       </ToggleContainer>
-      <ChatsNavbar />
+      <ChatsNavbar history={history} />
       <ChatsList chats={chats} history={history} />
     </Container>
   )

@@ -63,21 +63,22 @@ interface ChatNavbarProps {
 
 const ChatNavbar: React.FC<ChatNavbarProps> = ({ chat, history }) => {
   const [removeChat] = useRemoveChatMutation({
-    variables: {
-      chatId: chat.id,
-    },
     update: (client, { data }) => {
       if (data && data.removeChat) {
-        eraseChat(client.cache, data.removeChat);
+        eraseChat(client, data.removeChat);
       }
     },
   });
 
   const handleRemoveChat = useCallback(() => {
-    removeChat().then(() => {
+    removeChat({
+      variables: {
+        chatId: chat.id,
+      },
+    }).then(() => {
       history.replace('/chats');
     });
-  }, [removeChat, history]);
+  }, [removeChat, history, chat.id]);
 
   const navBack = useCallback(() => {
     history.replace('/chats');
