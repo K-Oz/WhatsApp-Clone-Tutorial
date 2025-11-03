@@ -1,11 +1,13 @@
 import React from 'react';
 import { useCallback } from 'react';
+import { Redirect } from 'react-router-dom';
 import {
   useGetChatQuery,
   useAddMessageMutation,
 } from '../../graphql/types';
 import { writeMessage } from '../../services/cache.service';
 import { History } from 'history';
+import ChatNavbar from './ChatNavbar';
 
 interface ChatRoomScreenParams {
   chatId: string;
@@ -61,10 +63,14 @@ const ChatRoomScreen: React.FC<ChatRoomScreenParams> = ({ chatId, history }) => 
   const loadingChat = loading;
 
   if (loadingChat) return null;
-  if (chat === null || chat === undefined) return null;
+  if (chat === null || chat === undefined) {
+    // Chat was probably removed from cache by the subscription handler
+    return <Redirect to="/chats" />;
+  }
 
   return (
     <div>
+      {chat.id && <ChatNavbar chat={chat} history={history} />}
       {chat.picture && <img src={chat.picture} alt="Profile" />}
       <div>{chat.name}</div>
       <ul>
