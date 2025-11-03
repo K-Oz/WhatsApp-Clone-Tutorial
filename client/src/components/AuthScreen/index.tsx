@@ -1,13 +1,13 @@
-import MaterialButton from '@material-ui/core/Button';
-import MaterialTextField from '@material-ui/core/TextField';
 import React from 'react';
-import { useCallback, useState } from 'react';
+import { useMemo } from 'react';
+import { Route } from 'react-router-dom';
 import styled from 'styled-components';
-import { signIn } from '../../services/auth.service';
+import AnimatedSwitch from '../AnimatedSwitch';
+import SignInForm from './SignInForm';
+import SignUpForm from './SignUpForm';
 import { RouteComponentProps } from 'react-router-dom';
 
 const Container = styled.div`
-  height: 100%;
   background: radial-gradient(rgb(34, 65, 67), rgb(17, 48, 50)),
     url(/assets/chat-background.jpg) no-repeat;
   background-size: cover;
@@ -34,132 +34,56 @@ const Title = styled.h2`
   color: white;
 `;
 
-// eslint-disable-next-line
 const Alternative = styled.div`
   position: fixed;
   bottom: 10px;
   left: 10px;
 
-  a {
+  label {
     color: var(--secondary-bg);
   }
 `;
 
-const SignInForm = styled.div`
-  height: calc(100% - 265px);
-`;
+const AuthScreen: React.FC<RouteComponentProps<any>> = ({
+  history,
+  location,
+}) => {
+  const alternative = useMemo(() => {
+    if (location.pathname === '/sign-in') {
+      const handleSignUp = () => {
+        history.replace('/sign-up');
+      };
 
-const ActualForm = styled.form`
-  padding: 20px;
-`;
+      return (
+        <Alternative>
+          Don't have an account yet?{' '}
+          <label onClick={handleSignUp}>Sign up!</label>
+        </Alternative>
+      );
+    } else {
+      const handleSignIn = () => {
+        history.replace('/sign-in');
+      };
 
-const Section = styled.div`
-  width: 100%;
-  padding-bottom: 35px;
-`;
-
-const Legend = styled.legend`
-  font-weight: bold;
-  color: white;
-`;
-
-// eslint-disable-next-line
-const Label = styled.label`
-  color: white !important;
-`;
-
-// eslint-disable-next-line
-const Input = styled.input`
-  color: white;
-
-  &::placeholder {
-    color: var(--primary-bg);
-  }
-`;
-
-const TextField = styled(MaterialTextField)`
-  width: 100%;
-  position: relative;
-
-  > div::before {
-    border-color: white !important;
-  }
-
-  input {
-    color: white !important;
-
-    &::placeholder {
-      color: var(--primary-bg) !important;
+      return (
+        <Alternative>
+          Already have an accout? <label onClick={handleSignIn}>Sign in!</label>
+        </Alternative>
+      );
     }
-  }
-
-  label {
-    color: white !important;
-  }
-`;
-
-const Button = styled(MaterialButton)`
-  width: 100px;
-  display: block !important;
-  margin: auto !important;
-  background-color: var(--secondary-bg) !important;
-
-  &[disabled] {
-    color: #38a81c;
-  }
-
-  &:not([disabled]) {
-    color: white;
-  }
-`;
-
-const AuthScreen: React.FC<RouteComponentProps<any>> = ({ history }) => {
-  const [userId, setUserId] = useState('');
-
-  const onUserIdChange = useCallback(({ target }) => {
-    setUserId(target.value);
-  }, []);
-
-  const maySignIn = useCallback(() => {
-    return !!userId;
-  }, [userId]);
-
-  const handleSignIn = useCallback(() => {
-    signIn(userId).then(() => {
-      history.replace('/chats');
-    });
-  }, [userId, history]);
+  }, [location.pathname, history]);
 
   return (
-    <Container>
-      <Intro>
+    <Container className="AuthScreen Screen">
+      <Intro className="AuthScreen-intro">
         <Icon src="assets/whatsapp-icon.png" className="AuthScreen-icon" />
         <Title className="AuthScreen-title">WhatsApp</Title>
       </Intro>
-      <SignInForm>
-        <ActualForm>
-          <Legend>Sign in</Legend>
-          <Section>
-            <TextField
-              data-testid="user-id-input"
-              label="User ID"
-              value={userId}
-              onChange={onUserIdChange}
-              margin="normal"
-              placeholder="Enter current user ID"
-            />
-          </Section>
-          <Button
-            data-testid="sign-in-button"
-            type="button"
-            color="secondary"
-            variant="contained"
-            disabled={!maySignIn()}
-            onClick={handleSignIn}>
-            Sign in
-          </Button>
-        </ActualForm>
-      </SignInForm>
+      <AnimatedSwitch>
+        <Route exact path="/sign-in" component={SignInForm} />
+        <Route exact path="/sign-up" component={SignUpForm} />
+      </AnimatedSwitch>
+      {alternative}
     </Container>
   );
 };
