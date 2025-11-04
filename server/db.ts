@@ -69,6 +69,9 @@ export async function initDb(): Promise<void> {
   await pool.query(
     sql`GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO testuser;`
   );
+  await pool.query(
+    sql`GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO testuser;`
+  );
 }
 
 export const resetDb = async () => {
