@@ -83,7 +83,9 @@ server.applyMiddleware({
 const port = process.env.PORT || 4000;
 
 app.listen(port, () => {
-  console.log(`Simple server is running on http://localhost:${port}${server.graphqlPath}`);
+  console.log(
+    `Simple server is running on http://localhost:${port}${server.graphqlPath}`
+  );
   console.log(`REST endpoint: http://localhost:${port}/chats`);
   console.log(`GraphQL endpoint: http://localhost:${port}/graphql`);
 });
