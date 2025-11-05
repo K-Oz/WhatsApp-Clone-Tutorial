@@ -73,7 +73,7 @@ const chats = [
 app.get('/chats', (req: any, res: any) => {
   console.log('📡 [REST] GET /chats called');
   // In REST, we have to manually populate the lastMessage
-  const chatsWithMessages = chats.map(chat => ({
+  const chatsWithMessages = chats.map((chat) => ({
     ...chat,
     lastMessage: messages.find((m) => m.id === chat.lastMessage),
   }));
@@ -123,12 +123,12 @@ const resolvers = {
   },
 };
 
-const server = new ApolloServer({ 
-  typeDefs, 
+const server = new ApolloServer({
+  typeDefs,
   resolvers,
   // Enable introspection and playground for development
   introspection: true,
-  playground: true
+  playground: true,
 });
 
 server.applyMiddleware({
@@ -142,8 +142,12 @@ app.listen(port, () => {
   console.log('🚀 Step 4 Demo Server started!');
   console.log(`🌍 Server: http://localhost:${port}`);
   console.log(`📡 REST endpoint: http://localhost:${port}/chats`);
-  console.log(`🔥 GraphQL endpoint: http://localhost:${port}${server.graphqlPath}`);
-  console.log(`🎮 GraphQL Playground: http://localhost:${port}${server.graphqlPath}`);
+  console.log(
+    `🔥 GraphQL endpoint: http://localhost:${port}${server.graphqlPath}`
+  );
+  console.log(
+    `🎮 GraphQL Playground: http://localhost:${port}${server.graphqlPath}`
+  );
   console.log('');
   console.log('=== STEP 4 TUTORIAL DEMONSTRATION ===');
   console.log('');
@@ -152,10 +156,14 @@ app.listen(port, () => {
   console.log('');
   console.log('2. Try the NEW way (GraphQL):');
   console.log(`   curl -X POST -H "Content-Type: application/json" \\`);
-  console.log(`     --data '{"query": "{ chats { id name picture lastMessage { id content createdAt } } }"}' \\`);
+  console.log(
+    `     --data '{"query": "{ chats { id name picture lastMessage { id content createdAt } } }"}' \\`
+  );
   console.log(`     http://localhost:${port}/graphql`);
   console.log('');
-  console.log('Notice how GraphQL lets you specify exactly what fields you want!');
+  console.log(
+    'Notice how GraphQL lets you specify exactly what fields you want!'
+  );
 });
 
 export { app, server };

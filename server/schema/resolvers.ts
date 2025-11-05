@@ -74,19 +74,21 @@ const resolvers = {
     },
 
     chat(root: any, { chatId }: any) {
-      return chats.find(c => c.id === chatId);
+      return chats.find((c) => c.id === chatId);
     },
   },
 
   Mutation: {
     addMessage(root: any, { chatId, content }: any) {
-      const chatIndex = chats.findIndex(c => c.id === chatId);
+      const chatIndex = chats.findIndex((c) => c.id === chatId);
 
       if (chatIndex === -1) return null;
 
       const chat = chats[chatIndex];
 
-      const messagesIds = messages.map(currentMessage => Number(currentMessage.id));
+      const messagesIds = messages.map((currentMessage) =>
+        Number(currentMessage.id)
+      );
       const messageId = String(Math.max(...messagesIds) + 1);
       const message = {
         id: messageId,
