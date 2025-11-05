@@ -5,6 +5,7 @@ import cookie from 'cookie';
 
 import usersModule from './modules/users';
 import chatsModule from './modules/chats';
+import { UnsplashApi } from './modules/chats/unsplash.api';
 
 export const rootModule = new GraphQLModule({
   name: 'root',
@@ -25,5 +26,8 @@ export const server = new ApolloServer({
 
     return rootModule.context(session);
   },
+  dataSources: () => ({
+    unsplashApi: new UnsplashApi(),
+  }),
   subscriptions: rootModule.subscriptions,
 });
