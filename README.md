@@ -143,7 +143,7 @@ Currently, Whatsapp Clone includes the following chapters:
 - [Step 15: Using a REST API.](https://github.com/Urigo/WhatsApp-Clone-Tutorial/blob/master/.tortilla/manuals/views/step15.md)
 - [Step 16: Modularity.](https://github.com/Urigo/WhatsApp-Clone-Tutorial/blob/master/.tortilla/manuals/views/step16.md)
 - [Step 17: Performance.](https://github.com/Urigo/WhatsApp-Clone-Tutorial/blob/master/.tortilla/manuals/views/step17.md)
-- Step 18: Your choice! Submit a request [here](https://github.com/Urigo/WhatsApp-Clone-Client-React/issues)
+- [Step 18: Deployment & Production.](https://github.com/Urigo/WhatsApp-Clone-Tutorial/blob/master/.tortilla/manuals/views/step18.md)
 
 Whatsapp Clone is updated on a regular basis, so you should expect more steps and extensions with time.
 You can keep track of our [road map](https://docs.google.com/document/d/1p2Zio6Js2eoFfHs9CjIMF6jTuNyD4eQEHlgEAKhAqM8/edit?usp=sharing) to see what’s upcoming.

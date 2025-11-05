@@ -2732,7 +2732,7 @@ Last two panels are there to understand at what number of requests the latency i
 
 [{]: <helper> (navStep)
 
-| [< Previous Step](https://github.com/Urigo/WhatsApp-Clone-Tutorial/tree/master@next/.tortilla/manuals/views/step16.md) |
-|:----------------------|
+| [< Previous Step](https://github.com/Urigo/WhatsApp-Clone-Tutorial/tree/master@next/.tortilla/manuals/views/step16.md) | [Next Step >](https://github.com/Urigo/WhatsApp-Clone-Tutorial/tree/master@next/.tortilla/manuals/views/step18.md) |
+|:--------------------------------|--------------------------------:|
 
 [}]: #
