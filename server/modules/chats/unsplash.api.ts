@@ -3,6 +3,7 @@ import { RESTDataSource, RequestOptions } from 'apollo-datasource-rest';
 import { resolve } from 'path';
 import { trackProvider } from '@safe-api/middleware';
 import { RandomPhoto } from '../../types/unsplash';
+import { unsplashAccessKey } from '../../env';
 
 interface RandomPhotoInput {
   query: string;
@@ -19,10 +20,7 @@ export class UnsplashApi extends RESTDataSource {
   }
 
   willSendRequest(request: RequestOptions) {
-    request.headers.set(
-      'Authorization',
-      'Client-ID 4d048cfb4383b407eff92e4a2a5ec36c0a866be85e64caafa588c110efad350d'
-    );
+    request.headers.set('Authorization', unsplashAccessKey);
   }
 
   async getRandomPhoto() {
