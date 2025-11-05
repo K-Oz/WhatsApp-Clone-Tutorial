@@ -69,8 +69,11 @@ Update your server's `env.ts` to handle production configuration:
 import dotenv from 'dotenv';
 
 // Load environment-specific .env file
+// Supports development, staging, and production environments
 const envFile = process.env.NODE_ENV === 'production' 
   ? '.env.production' 
+  : process.env.NODE_ENV === 'staging'
+  ? '.env.staging'
   : '.env';
 
 dotenv.config({ path: envFile });
@@ -713,8 +716,13 @@ const pool = new Pool({
   max: 20, // max connections
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
+  // Enable SSL for production with proper certificate validation
+  // Note: Some cloud providers (like Heroku) require rejectUnauthorized: false
+  // For better security, use CA certificates when available
   ssl: env.nodeEnv === 'production' ? {
-    rejectUnauthorized: false
+    rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED !== 'false',
+    // Optionally specify CA certificate for enhanced security:
+    // ca: fs.readFileSync('/path/to/server-ca.pem').toString(),
   } : undefined,
 });
 ```
@@ -898,8 +906,18 @@ pg_dump -U $DB_USER $DB_NAME > $BACKUP_FILE
 # Compress backup
 gzip $BACKUP_FILE
 
-# Remove backups older than 30 days
-find $BACKUP_DIR -name "*.gz" -mtime +30 -delete
+# Backup retention strategy:
+# Keep daily backups for 7 days
+# Keep weekly backups for 4 weeks  
+# Keep monthly backups for 12 months
+# This provides a good balance of recoverability and storage costs
+
+# Remove daily backups older than 7 days (keep weekly/monthly)
+find $BACKUP_DIR -name "whatsapp_*.gz" -mtime +7 -not -name "*_weekly_*" -not -name "*_monthly_*" -delete
+
+# For weekly/monthly backups, you might want to tag them differently:
+# Weekly: Copy Sunday's backup as weekly
+# Monthly: Copy 1st day of month's backup as monthly
 
 echo "Backup completed: $BACKUP_FILE.gz"
 ```
