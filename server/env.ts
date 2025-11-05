@@ -8,3 +8,6 @@ export const resetDb = process.env.RESET_DB || false;
 export const fakedDb = process.env.FAKED_DB
   ? parseInt(process.env.FAKED_DB, 10)
   : 0;
+export const unsplashAccessKey =
+  process.env.UNSPLASH_ACCESS_KEY ||
+  'Client-ID 4d048cfb4383b407eff92e4a2a5ec36c0a866be85e64caafa588c110efad350d';

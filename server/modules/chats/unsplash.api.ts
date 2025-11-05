@@ -1,8 +1,9 @@
 import { Injectable, ProviderScope } from '@graphql-modules/di';
+import { RESTDataSource, RequestOptions } from 'apollo-datasource-rest';
 import { resolve } from 'path';
-import axios from 'axios';
 import { trackProvider } from '@safe-api/middleware';
 import { RandomPhoto } from '../../types/unsplash';
+import { unsplashAccessKey } from '../../env';
 
 interface RandomPhotoInput {
   query: string;
@@ -12,30 +13,24 @@ interface RandomPhotoInput {
 @Injectable({
   scope: ProviderScope.Application,
 })
-export class UnsplashApi {
-  baseURL = 'https://api.unsplash.com/';
+export class UnsplashApi extends RESTDataSource {
+  constructor() {
+    super();
+    this.baseURL = 'https://api.unsplash.com/';
+  }
+
+  willSendRequest(request: RequestOptions) {
+    request.headers.set('Authorization', unsplashAccessKey);
+  }
 
   async getRandomPhoto() {
     const trackedRandomPhoto = await trackProvider(
-      async ({ query, orientation }: RandomPhotoInput) => {
-        const response = await axios.get<RandomPhoto>('photos/random', {
-          baseURL: this.baseURL,
-          headers: {
-            Authorization:
-              'Client-ID 4d048cfb4383b407eff92e4a2a5ec36c0a866be85e64caafa588c110efad350d',
-          },
-          params: {
-            query,
-            orientation,
-          },
-        });
-
-        return response.data;
-      },
+      ({ query, orientation }: RandomPhotoInput) =>
+        this.get<RandomPhoto>('photos/random', { query, orientation }),
       {
         provider: 'Unsplash',
         method: 'RandomPhoto',
-        location: resolve(__dirname, '../logs/main'),
+        location: resolve(__dirname, '../../logs/main'),
       }
     );
 

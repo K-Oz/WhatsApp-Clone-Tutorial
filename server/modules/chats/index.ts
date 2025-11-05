@@ -4,7 +4,6 @@ import commonModule from '../common';
 import usersModule from '../users';
 import { Message, Chat } from '../../db';
 import { Resolvers } from '../../types/graphql';
-import { UnsplashApi } from './unsplash.api';
 import { Users } from './../users/users.provider';
 import { Auth } from './../users/auth.provider';
 import { Chats } from './chats.provider';
@@ -95,7 +94,7 @@ const resolvers: Resolvers = {
       return participant ? participant.name : null;
     },
 
-    async picture(chat, args, { injector }) {
+    async picture(chat, args, { injector, dataSources }) {
       const currentUser = await injector.get(Auth).currentUser();
 
       if (!currentUser) return null;
@@ -107,7 +106,7 @@ const resolvers: Resolvers = {
 
       return participant && participant.picture
         ? participant.picture
-        : injector.get(UnsplashApi).getRandomPhoto();
+        : dataSources.unsplashApi.getRandomPhoto();
     },
 
     async messages(chat, args, { injector }) {
@@ -240,5 +239,5 @@ export default new GraphQLModule({
   typeDefs,
   resolvers,
   imports: () => [commonModule, usersModule],
-  providers: () => [UnsplashApi, Chats],
+  providers: () => [Chats],
 });
